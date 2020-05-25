@@ -1,0 +1,14 @@
+{
+  "name": "@codepan/utiljs",
+  "version": "0.0.1",
+  "main": "dist/utiljs.umd.min.js",
+  "types": "./types/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack --watch"
+  },
+  "devDependencies": {
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11"
+  }
+}
