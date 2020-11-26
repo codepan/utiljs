@@ -9,7 +9,7 @@
     "test": "yarn run build && yarn run dev",
     "dev": "webpack-dev-server --config build/webpack.dev.config.js",
     "build": "webpack --config build/webpack.build.config.js",
-    "publish": "yarn run build && node build/publish.js"
+    "b": "yarn run build && node build/publish.js"
   },
   "files": [
     "lib",
