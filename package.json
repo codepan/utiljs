@@ -1,6 +1,8 @@
 {
   "name": "@codepan/utiljs",
   "version": "0.0.1-3",
+  "description": "a javascript util package",
+  "author": "codepan",
   "main": "lib/index.js",
   "license": "MIT",
   "scripts": {
