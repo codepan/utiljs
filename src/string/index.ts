@@ -2,7 +2,7 @@
  * 中划线’-‘后的字符转大写
  * @param {string} source 需转换的字符串
  */
-function hyphenToCamel (source) {
+function hyphenToCamel (source: string): string {
   let items = source.split('-')
   items = items.map(item => `${item.charAt(0).toUpperCase()}${item.substr(1)}`)
   return items.join('')
@@ -12,7 +12,7 @@ function hyphenToCamel (source) {
  * hyphenToCamel的反函数，将大写字符转为小写并以中划线’-‘分开
  * @param {string} source 需转换的字符串
  */
-function camelToHyphen (source) {
+function camelToHyphen (source: string): string {
   return source.replace(/([A-Z])/g, (match, $1, index) => {
     if (index === 0) return $1.toLowerCase() 
     return `-${$1.toLowerCase()}`
@@ -23,7 +23,7 @@ function camelToHyphen (source) {
  * 中划线'-'转下划线'_'
  * @param {string} source 
  */
-function hyphenToUnderline (source) {
+function hyphenToUnderline (source: string): string {
   return source.replace(/\-/g, '_')
 }
 
@@ -31,7 +31,7 @@ function hyphenToUnderline (source) {
  * 下划线'_'转中划线'-'
  * @param {string} source 
  */
-function underlineToHyphen (source) {
+function underlineToHyphen (source: string): string {
   return source.replace(/_/g, '-')
 }
 
@@ -39,7 +39,7 @@ function underlineToHyphen (source) {
  * 首字母小写
  * @param {string} source 
  */
-function lowerFirst (source) {
+function lowerFirst (source: string): string {
   return `${source.charAt(0).toLowerCase()}${source.substr(1)}`
 }
 
@@ -47,7 +47,7 @@ function lowerFirst (source) {
  * 首字母大写
  * @param {string} source 
  */
-function upperFirst (source) {
+function upperFirst (source: string): string {
   return `${source.charAt(0).toUpperCase()}${source.substr(1)}`
 }
 
