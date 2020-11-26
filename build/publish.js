@@ -95,7 +95,7 @@ inquirer.prompt([
               default: true,
             }).then(({ couldPublish }) => {
               if (!couldPublish) return
-              shell.exec('npm publish')
+              shell.exec('npm publish --access public')
             })
           })
         }
