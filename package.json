@@ -1,6 +1,6 @@
 {
   "name": "@codepan/utiljs",
-  "version": "0.0.1-4",
+  "version": "0.0.1-0",
   "description": "a javascript util package",
   "author": "codepan",
   "main": "lib/index.js",
@@ -9,7 +9,7 @@
     "test": "yarn run build && yarn run dev",
     "dev": "webpack-dev-server --config build/webpack.dev.config.js",
     "build": "webpack --config build/webpack.build.config.js",
-    "b": "yarn run build && node build/publish.js"
+    "publish": "yarn run build && node build/publish.js"
   },
   "files": [
     "lib",
