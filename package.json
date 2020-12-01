@@ -8,28 +8,24 @@
   "scripts": {
     "test": "yarn run build && yarn run dev",
     "dev": "webpack-dev-server --config build/webpack.dev.config.js",
-    "build": "webpack --config build/webpack.build.config.js",
-    "b": "yarn run build && node build/publish.js"
+    "build": "rollup -c build/rollup.config.js",
+    "release": "yarn run build && packpub"
   },
   "files": [
     "lib",
     "src"
   ],
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^4.8.2",
     "@typescript-eslint/parser": "^4.8.2",
-    "awesome-typescript-loader": "^5.2.1",
     "clean-webpack-plugin": "^3.0.0",
     "commander": "^6.0.0",
     "eslint": "^7.14.0",
-    "eslint-loader": "^4.0.2",
-    "html-webpack-plugin": "^4.3.0",
     "inquirer": "^7.3.3",
+    "rollup": "^2.33.3",
+    "rollup-plugin-typescript2": "^0.29.0",
     "shelljs": "^0.8.4",
-    "typescript": "^3.9.7",
-    "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0",
-    "webpack-merge": "^5.1.2"
+    "typescript": "^3.9.7"
   }
 }
