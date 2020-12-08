@@ -1,15 +1,21 @@
 /**
- * 中划线’-‘后的字符转大写
+ * 中划线’-‘转驼峰
  * @param {string} source 需转换的字符串
  */
 function hyphenToCamel (source: string): string {
-  let items = source.split('-')
-  items = items.map(item => `${item.charAt(0).toUpperCase()}${item.substr(1)}`)
-  return items.join('')
+  return source.replace(/-(\w)/g, (match, $1) => $1.toUpperCase())
 }
 
 /**
- * hyphenToCamel的反函数，将大写字符转为小写并以中划线’-‘分开
+ * 下划线'_'转驼峰
+ * @param {string} source 需转换的字符串
+ */
+function underlineToCamel (source: string): string {
+  return source.replace(/_(\w)/g, (match, $1) => $1.toUpperCase())
+}
+
+/**
+ * 驼峰转中划线’-‘
  * @param {string} source 需转换的字符串
  */
 function camelToHyphen (source: string): string {
@@ -18,6 +24,18 @@ function camelToHyphen (source: string): string {
     return `-${$1.toLowerCase()}`
   })
 }
+
+/**
+ * 驼峰转下划线’_‘
+ * @param {string} source 需转换的字符串
+ */
+function camelToUnderline (source: string): string {
+  return source.replace(/([A-Z])/g, (match, $1, index) => {
+    if (index === 0) return $1.toLowerCase() 
+    return `_${$1.toLowerCase()}`
+  })
+}
+
 
 /**
  * 中划线'-'转下划线'_'
@@ -53,7 +71,9 @@ function upperFirst (source: string): string {
 
 export {
   hyphenToCamel,
+  underlineToCamel,
   camelToHyphen,
+  camelToUnderline,
   hyphenToUnderline,
   underlineToHyphen,
   lowerFirst,

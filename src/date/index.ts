@@ -1,44 +1,27 @@
-const defaultPattern = 'yyyy年MM月dd日 hh时mm分ss秒'
-const regExp = /([yMdwhms]+)/g
-const paddingLeftZero = (str: string | number, length: number): string => {
-  str += ''
-  return length === 2 ? `00${str}`.substr((str as string).length) : (str as string)
-}
+import { defaultFormatPattern, patternRegExp } from './constants'
+import { createDateInstance, paddingLeftZero } from './utils'
+import { LikeDate } from './model'
 
-const createDate = (date: unknown): null | Date => {
-  if (!date) {
-    return null
-  }
-
-  if (typeof date === 'string') {
-    // safari 中不支持中划线-格式的年月日格式，但/兼容性很好
-    date = date.replace('-', '/')
-    date = new Date(date as string)
-  }
-
-  if (typeof date === 'number') {
-    date = new Date(date)
-  }
-
-  if (date instanceof Date) {
-    if (Number.isNaN(date.getTime())) {
-      return null
-    }
-  }
-
-  return date as Date
-}
-function format (date: unknown, pattern = defaultPattern): string {
-  const dateInstance = createDate(date)
+/**
+ * 
+ * @param date 将要格式化的日期
+ * @param pattern 格式化模式，默认为：'yyyy年MM月dd日 hh时mm分ss秒'
+ * @example
+ * 格式化当前日期 format('')或format(undefined)或format(null)
+ * 传入时间戳 format(1607000082114)
+ */
+function format (date: LikeDate, pattern: string = defaultFormatPattern): string {
+  const dateInstance = createDateInstance(date)
+  console.log(dateInstance)
   if (!dateInstance) {
     return ''
   }
   
   if (typeof pattern !== 'string') {
-    pattern = defaultPattern
+    pattern = defaultFormatPattern
   }
 
-  return pattern.replace(regExp, (match, $1): string => {
+  return pattern.replace(patternRegExp, (match, $1): string => {
     const length = $1.length
     switch ($1.charAt(0)) {
       case 'y':
@@ -62,9 +45,9 @@ function format (date: unknown, pattern = defaultPattern): string {
  * @param {*} date1 日期一
  * @param {*} date2 日期二
  */
-function compare (date1: unknown, date2: unknown): number {
-  const firstTimestamp = createDate(date1).getTime()
-  const secondTimestamp = createDate(date2).getTime()
+function compare (date1: LikeDate, date2: LikeDate): number {
+  const firstTimestamp = createDateInstance(date1).getTime()
+  const secondTimestamp = createDateInstance(date2).getTime()
 
   if (firstTimestamp - secondTimestamp === 0) {
     return 0
@@ -78,8 +61,8 @@ function compare (date1: unknown, date2: unknown): number {
  * @param date1 日期一
  * @param date2 日期二
  */
-function countDays (date1: unknown, date2: unknown): number {
-  return (createDate(date1).getTime() - createDate(date2).getTime()) / (24 * 60 * 60 * 1000)
+function countDays (date1: LikeDate, date2: LikeDate): number {
+  return (createDateInstance(date1).getTime() - createDateInstance(date2).getTime()) / (24 * 60 * 60 * 1000)
 }
 
 /**
