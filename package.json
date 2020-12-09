@@ -1,6 +1,6 @@
 {
   "name": "@codepan/utiljs",
-  "version": "0.0.1-6",
+  "version": "0.0.1-7",
   "description": "a javascript util package",
   "author": "codepan",
   "main": "lib/index.js",
