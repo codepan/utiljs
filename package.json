@@ -10,7 +10,7 @@
     "test": "serve test",
     "dev": "rollup -w -c build/rollup.dev.config.js",
     "build": "rollup -c build/rollup.prod.config.js",
-    "release": "yarn run build && packpub"
+    "release": "yarn run build && packpub publish"
   },
   "files": [
     "lib",
