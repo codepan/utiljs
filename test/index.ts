@@ -1,6 +1,8 @@
-import { URL, string, date } from '../src'
+import { URL, string, datetime, object, math, match } from '../src'
 
-console.log(date.format(1607000082114, 'yyyy年MM-dd hh:mm:ss'))
+console.log(object.convertFirstLetterCaseOfKey({name: 'd', age: 2}))
+console.log(string.lowerFirst('NID'))
+// console.log(date.format(1607000082114, 'yyyy年MM-dd hh:mm:ss'))
 // import { lowerFirst } from '../src/string'
 // const { URL } = require('@tencent/monitor-utils');
 // const url = new URL('http://www.test.com:8080/user');

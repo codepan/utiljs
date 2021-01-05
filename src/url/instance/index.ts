@@ -357,7 +357,7 @@ class URL {
    */
   public addQuery(key: string | Record<string, unknown>, value?: string, rule: string = RULES.REPLACE): URL {
     const url = this.getHref()
-    let query = this.getQuery()
+    let query = this.getQuery() as Record<string, unknown>
     const search = this.getSearch()
     const hash = this.getHash()
     let [left, right] = ['', '']
@@ -376,7 +376,7 @@ class URL {
         case RULES.REPLACE:
           query = {
             ...query as Record<string, unknown>,
-            ...key as Record<string, unknown>,
+            ...key as Record<string, unknown>
           }
           break
         case RULES.REPEAT:
@@ -384,10 +384,11 @@ class URL {
             if (!query[key]) {
               query[key] = value
             } else {
-              if (Array.isArray(query[key])) {
-                Array.isArray(value) ? query[key].push(...value) : query[key].push(value)
+              const result = query[key]
+              if (Array.isArray(result)) {
+                Array.isArray(value) ? result.push(...value) : result.push(value)
               } else {
-                Array.isArray(value) ? query[key] = [query[key], ...value] : query[key] = [query[key], value]
+                Array.isArray(value) ? query[key] = [result, ...value] : query[key] = [result, value]
               }
             }
           })
@@ -395,7 +396,7 @@ class URL {
         case RULES.KEEP:
           query = {
             ...key as Record<string, unknown>,
-            ...query as Record<string, unknown>,
+            ...query as Record<string, unknown>
           }
       }
     } else {
@@ -422,7 +423,7 @@ class URL {
    */
   public removeQuery(keyOrKeysOrKeyValue: string | string[] | Record<string, unknown>, value?: string): URL {
     const url = this.getHref()
-    const query = this.getQuery()
+    const query = this.getQuery() as Record<string, unknown>
     const search = this.getSearch()
     const [left, right] = url.split(search)
 
@@ -468,7 +469,7 @@ class URL {
     key: string | RegExp,
     value?: string | number | Array<string | number> | RegExp | boolean | HasQueryFun
   ): boolean {
-    const query = this.getQuery()
+    const query = this.getQuery() as Record<string, unknown>
 
     if (typeChecker.isUndefined(value)) {
       if (typeChecker.isRegExp(key)) {
@@ -498,7 +499,7 @@ class URL {
     }
 
     if (typeChecker.isRegExp(value)) {
-      const isValueMatched = (queryValue) => {
+      const isValueMatched = (queryValue: unknown) => {
         let valueMatched = false
         if (Array.isArray(queryValue)) {
           valueMatched = !!queryValue.find(item => (value as RegExp).test(item))
@@ -523,7 +524,7 @@ class URL {
     if (typeChecker.isFunction(value)) {
       key = key as string
       value = value as HasQueryFun
-      return value(query[key], key, query as Record<string, unknown>)
+      return value(query[key] as string, key, query as Record<string, unknown>)
     }
 
     return false
@@ -600,14 +601,14 @@ class URL {
     if (typeChecker.isObject(likeHash)) {
       const baseURL = `${parts.join('')}${likeQuery}`
       return new URL(baseURL)
-        .addQuery(likeHash)
+        .addQuery(likeHash as Record<string, unknown>)
         .getHref()
     }
 
     if (typeChecker.isObject(likeQuery)) {
       const baseURL = parts.join('')
       return new URL(baseURL)
-        .addQuery(likeQuery)
+        .addQuery(likeQuery as Record<string, unknown>)
         .setHash(likeHash as string)
         .getHref()
     }

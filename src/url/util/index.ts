@@ -1,11 +1,11 @@
 export const parseQueryString = (queryString: string): Record<string, unknown> => {
   const rawString = queryString.startsWith('?') ? queryString.substr(1) : queryString
   const paramEntries: string[] = rawString.split('&')
-  const query = paramEntries.reduce((memo: unknown, entry) => {
+  const query = paramEntries.reduce((memo: Record<string, unknown>, entry) => {
     const [key, value] = entry.split('=')
     // eslint-disable-next-line no-param-reassign
     if (memo[key]) {
-      Array.isArray(memo[key]) ? memo[key].push(value) : memo[key] = [memo[key], value]
+      Array.isArray(memo[key]) ? (memo[key] as Array<unknown>).push(value) : memo[key] = [memo[key], value]
     } else {
       memo[key] = value
     }

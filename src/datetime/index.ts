@@ -12,7 +12,6 @@ import { LikeDate } from './model'
  */
 function format (date: LikeDate, pattern: string = defaultFormatPattern): string {
   const dateInstance = createDateInstance(date)
-  console.log(dateInstance)
   if (!dateInstance) {
     return ''
   }
@@ -33,6 +32,7 @@ function format (date: LikeDate, pattern: string = defaultFormatPattern): string
       case 'h': return paddingLeftZero(dateInstance.getHours(), length)
       case 'm': return paddingLeftZero(dateInstance.getMinutes(), length)
       case 's': return paddingLeftZero(dateInstance.getSeconds(), length)
+      default: return ''
     }
   })
 }
@@ -46,8 +46,10 @@ function format (date: LikeDate, pattern: string = defaultFormatPattern): string
  * @param {*} date2 日期二
  */
 function compare (date1: LikeDate, date2: LikeDate): number {
-  const firstTimestamp = createDateInstance(date1).getTime()
-  const secondTimestamp = createDateInstance(date2).getTime()
+  const firstTimestamp = createDateInstance(date1)?.getTime()
+  const secondTimestamp = createDateInstance(date2)?.getTime()
+
+  if (!firstTimestamp || !secondTimestamp) throw new Error('参数不合法')
 
   if (firstTimestamp - secondTimestamp === 0) {
     return 0
@@ -62,7 +64,12 @@ function compare (date1: LikeDate, date2: LikeDate): number {
  * @param date2 日期二
  */
 function countDays (date1: LikeDate, date2: LikeDate): number {
-  return (createDateInstance(date1).getTime() - createDateInstance(date2).getTime()) / (24 * 60 * 60 * 1000)
+  const firstTimestamp = createDateInstance(date1)?.getTime()
+  const secondTimestamp = createDateInstance(date2)?.getTime()
+
+  if (!firstTimestamp || !secondTimestamp) throw new Error('参数不合法')
+
+  return (firstTimestamp - secondTimestamp) / (24 * 60 * 60 * 1000)
 }
 
 /**

@@ -1,63 +1,54 @@
-var defaultFormatPattern = 'yyyy年MM月dd日 hh时mm分ss秒';
-var patternRegExp = /([yMdwhms]+)/g;
-
-var paddingLeftZero = function (str, length) {
-    str += '';
-    return length === 2 ? ("00" + str).substr(str.length) : str;
-};
-var createDateInstance = function (date) {
-    if (!date) {
-        return new Date();
-    }
-    if (typeof date === 'string') {
-        // safari 中不支持中划线-格式的年月日格式，但兼容性很好
-        date = date.replace('-', '/');
-        date = new Date(date);
-    }
-    if (typeof date === 'number') {
-        date = new Date(date);
-    }
-    if (date instanceof Date) {
-        // 处理 Invalid Date 的情况
-        if (Number.isNaN(date.getTime())) {
-            return null;
-        }
-    }
-    return date;
-};
-
 /**
- *
- * @param date 将要格式化的日期
- * @param pattern 格式化模式，默认为：'yyyy年MM月dd日 hh时mm分ss秒'
- * @example
- * 格式化当前日期 format('')或format(undefined)或format(null)
- * 传入时间戳 format(1607000082114)
+ * 中划线’-‘转驼峰
+ * @param {string} source 需转换的字符串
  */
-function format(date, pattern) {
-    if (pattern === void 0) { pattern = defaultFormatPattern; }
-    var dateInstance = createDateInstance(date);
-    console.log(dateInstance);
-    if (!dateInstance) {
-        return '';
+/**
+ * 首字母小写
+ * @param {string} source
+ */
+function lowerFirst(source) {
+    return "" + source.charAt(0).toLowerCase() + source.substr(1);
+}
+/**
+ * 首字母大写
+ * @param {string} source
+ */
+function upperFirst(source) {
+    return "" + source.charAt(0).toUpperCase() + source.substr(1);
+}
+
+var isObject = function (target) { return Object.prototype.toString.call(target) === '[object Object]'; };
+/**
+ * 转换对象的key或数组中对象的key的首字母的大小写
+ * @param source 需要转换的内容，可以是对象，也可以是数组，或其它任意类型
+ * @param options 转换时的选项
+ *
+ * * caseType 指定转换为大写还是小写，大写：'upperCase' 小写：'lowerCase'
+ * * deep 是否深度递归转换，默认为false
+ * * exclude 不转换哪些对象key
+ */
+function convertFirstLetterCaseOfKey(source, options) {
+    if (options === void 0) { options = {}; }
+    var _a = options.caseType, caseType = _a === void 0 ? 'upperCase' : _a, _b = options.deep, deep = _b === void 0 ? false : _b, _c = options.exclude, exclude = _c === void 0 ? [] : _c;
+    if (Array.isArray(source)) {
+        return source.map(function (item) { return convertFirstLetterCaseOfKey(item, options); });
     }
-    if (typeof pattern !== 'string') {
-        pattern = defaultFormatPattern;
+    if (isObject(source)) {
+        return Object
+            .entries(source)
+            .reduce(function (memo, next) {
+            var key = next[0], value = next[1];
+            var excludes = Array.isArray(exclude) ? exclude : [exclude];
+            if (excludes.includes(key)) {
+                memo[key] = value;
+            }
+            else {
+                memo[caseType === 'upperCase' ? upperFirst(key) : lowerFirst(key)] = deep ? convertFirstLetterCaseOfKey(value, options) : value;
+            }
+            return memo;
+        }, {});
     }
-    return pattern.replace(patternRegExp, function (match, $1) {
-        var length = $1.length;
-        switch ($1.charAt(0)) {
-            case 'y':
-                var year = dateInstance.getFullYear().toString();
-                return year.substr(year.length - length);
-            case 'M': return paddingLeftZero(dateInstance.getMonth() + 1, length);
-            case 'd': return paddingLeftZero(dateInstance.getDate(), length);
-            case 'w': return String(dateInstance.getDay() + 1);
-            case 'h': return paddingLeftZero(dateInstance.getHours(), length);
-            case 'm': return paddingLeftZero(dateInstance.getMinutes(), length);
-            case 's': return paddingLeftZero(dateInstance.getSeconds(), length);
-        }
-    });
+    return source;
 }
 
 /*! *****************************************************************************
@@ -513,17 +504,17 @@ var URL = /** @class */ (function () {
                     break;
                 case RULES.REPEAT:
                     Object.entries(key).forEach(function (_a) {
-                        var _b;
                         var key = _a[0], value = _a[1];
                         if (!query[key]) {
                             query[key] = value;
                         }
                         else {
-                            if (Array.isArray(query[key])) {
-                                Array.isArray(value) ? (_b = query[key]).push.apply(_b, value) : query[key].push(value);
+                            var result = query[key];
+                            if (Array.isArray(result)) {
+                                Array.isArray(value) ? result.push.apply(result, value) : result.push(value);
                             }
                             else {
-                                Array.isArray(value) ? query[key] = __spreadArrays([query[key]], value) : query[key] = [query[key], value];
+                                Array.isArray(value) ? query[key] = __spreadArrays([result], value) : query[key] = [result, value];
                             }
                         }
                     });
@@ -756,12 +747,13 @@ var URL = /** @class */ (function () {
     return URL;
 }());
 
-console.log(format(1607000082114, 'yyyy年MM-dd hh:mm:ss'));
+console.log(convertFirstLetterCaseOfKey({ name: 'd', age: 2 }));
+console.log(lowerFirst('NID'));
+// console.log(date.format(1607000082114, 'yyyy年MM-dd hh:mm:ss'))
 // import { lowerFirst } from '../src/string'
 // const { URL } = require('@tencent/monitor-utils');
 // const url = new URL('http://www.test.com:8080/user');
 // const url = new URL('https://www.test.com:8080/user/?box=test&box=nima&a=1&name=#ccc');
-
 // url.addQuery('name', 'zhang');
 // url.addQuery({
 //   a: 1,
@@ -775,30 +767,20 @@ console.log(format(1607000082114, 'yyyy年MM-dd hh:mm:ss'));
 //   box: [1, 2]
 // })
 // console.log(queryString)
-
 // const query1 = URL.parse(url.getHref())
 // console.log(query1)
-
 // console.log(queryString);
-
 // const query = URL.parseQuery('a=3&b=4');
-
 // console.log(query);
-
 // const parsed = URL.parse('https://www.test.com:8080/user/?box=test#ccc', true);
 // console.log(parsed);
-
 // url.removeQuery('b');
-
 // url.removeQuery(['box', 'name']);
 // console.log(url.href, url.search, url.pathname);
-
 // console.log(url.setHostname('www.baidu.com').getHref());
-
 // const URI = require('urijs')
 // const uri = new URI('https://www.test.com:8080/user/?box=test&box=test1&name=#ccc')
 // console.log(URI.parseQuery('box=test&box=test1'))
 // console.log(uri.query())
 // console.log(url.setQuery('xx=33').getHref())
-
 // console.log(url.hasQuery('a', 1), url.getQuery())

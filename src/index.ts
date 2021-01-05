@@ -1,11 +1,18 @@
-import * as date from './date'
-import * as reg from './reg'
+import * as datetime from './datetime'
+import * as match from './match'
+import * as math from './math'
+import * as object from './object'
 import * as string from './string'
+
 import URL from './url'
+import Fullscreen from './fullscreen'
 
 export {
-  date,
-  reg,
+  datetime,
   string,
-  URL
+  object,
+  match,
+  math,
+  URL,
+  Fullscreen
 }
