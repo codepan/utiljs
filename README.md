@@ -1,95 +1,30 @@
-**hyphenToCamel**
+# 介绍
+该库是一个`前端js工具库`，旨在为前端开发的同学提供常用的基础能力，提高开发效率，专注力集中在业务本身。
 
+该库非常轻量，不依赖任何第三方包，几乎全部采用原生js进行实现
+# 安装
+```bash
+npm i @codepan/utiljs
+```
+# 使用
+该库支持多种使用方式：
+* 普通js引入
+* 模块化使用
+  
+模块化使用时支持两种引入方式：
+* 全量引入
+* 按需引入
+
+# 快速开始
 ```js
-/**
- * 中划线’-‘后的字符转大写
- * @param {*} str 
- */
-function hyphenToCamel (str) {
-  let items = str.split('-')
-  items = items.map(item => `${item.charAt(0).toUpperCase()}${item.substr(1)}`)
-  return items.join('')
-}
+import { string } from '@codepan/utiljs'
 
-const str = 'hello-world'
-console.log(hyphenToCamel(str)) // HelloWorld
+// 首字母大写
+string.upperFirst('hello') // Hello
+// 中划线转驼峰
+string.hyphenToCamel('hello-world') // helloWorld
 ```
 
-**camelToHyphen**
-
-```js
-/**
- * hyphenToCamel的反函数，将大写字符转为小写并以中划线’-‘分开
- * @param {*} str 
- */
-function camelToHyphen (str) {
-  return str.replace(/([A-Z])/g, (match, $1, index) => {
-    if (index === 0) return $1.toLowerCase() 
-    return `-${$1.toLowerCase()}`
-  })
-}
-
-const str = 'HiMaMM'
-console.log(camelToHyphen(str)) // hi-ma-m-m
-```
-
-**hyphenToUnderline**
-
-```js
-/**
- * 中划线'-'转下划线'_'
- * @param {*} str 
- */
-function hyphenToUnderline (str) {
-  return str.replace(/\-/g, '_')
-}
-
-const str = 'h-e-l-l-o'
-console.log(hyphenToUnderline(str)) // h_e_l_l_o
-```
-
-**underlineToHyphen**
-```js
-/**
- * 下划线'_'转中划线'-'
- * @param {*} str 
- */
-function underlineToHyphen (str) {
-  return str.replace(/_/g, '-')
-}
-
-const str = 'h_e_l_l_o'
-console.log(underlineToHyphen(str)) // h-e-l-l-o
-```
-
-
-**lowerFirst**
-
-```js
-/**
- * 首字母小写
- * @param {*} str 
- */
-function lowerFirst (str) {
-  return `${str.charAt(0).toLowerCase()}${str.substr(1)}`
-}
-
-const str = 'Hello'
-console.log(lowerFirst(str)) // hello
-```
-
-**upperFirst**
-
-```js
-/**
- * 首字母大写
- * @param {*} str 
- */
-function upperFirst (str) {
-  return `${str.charAt(0).toUpperCase()}${str.substr(1)}`
-}
-
-const str = 'hello'
-console.log(upperFirst(str)) // Hello
-```
+# 官方文档
+[点击走起](http://codepan.top/utiljs)
 

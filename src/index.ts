@@ -16,3 +16,13 @@ export {
   URL,
   Fullscreen
 }
+
+export default {
+  datetime,
+  string,
+  object,
+  match,
+  math,
+  URL,
+  Fullscreen
+}
